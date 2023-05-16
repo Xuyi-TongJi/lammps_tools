@@ -1,9 +1,9 @@
 package main
 
 import (
-	"atom/heatFlux"
+	"atom/phase"
 )
 
 func main() {
-	heatFlux.Solve()
+	phase.Segment(100, phase.TV, ".temp")
 }

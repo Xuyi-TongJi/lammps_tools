@@ -13,7 +13,7 @@ type step struct {
 }
 
 // 输入参数
-const end int64 = 60000000
+const end int64 = 43784000 - 35000000
 const timeStep int64 = 100
 const target int = 500 // x步合并为一步
 
@@ -33,7 +33,6 @@ func Solve() {
 	final := make([]step, 0)
 	curr, cnt := 0, 0
 	sumT, sumV := 0.0, 0.0
-	fmt.Println(end / timeStep)
 	for i := int64(0); i < end/timeStep; i++ {
 		sumT += ans[i].temp
 		sumV += ans[i].volume
@@ -49,9 +48,12 @@ func Solve() {
 		}
 	}
 	// output
-	f, _ := os.OpenFile("./out500.txt", os.O_RDWR, 0666)
-	_, _ = f.Seek(0, 0)
-	for i := 0; i < cnt; i++ {
-		fmt.Fprintf(f, "%.3f %.1f\n", final[i].temp, final[i].volume)
+	if f, err := os.OpenFile("./phase/out.txt", os.O_RDWR, 0666); err != nil {
+		panic(err)
+	} else {
+		_, _ = f.Seek(0, 0)
+		for i := 0; i < cnt; i++ {
+			fmt.Fprintf(f, "%.3f %.1f\n", final[i].temp, final[i].volume)
+		}
 	}
 }
