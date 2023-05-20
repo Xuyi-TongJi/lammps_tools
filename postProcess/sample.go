@@ -107,7 +107,7 @@ func dataProcess(file *os.File, input Input, data []Data) []Data {
 	}
 	for true {
 		switch input.DataType {
-		case "heat":
+		case HEAT:
 			{
 				step := HeatData{}
 				n, err := fmt.Fscanf(file, "%d %f %f %f %f %f\n",
@@ -118,7 +118,7 @@ func dataProcess(file *os.File, input Input, data []Data) []Data {
 				}
 				data = append(data, step)
 			}
-		case "energy":
+		case ENERGY:
 			{
 				step := EnergyData{}
 				n, err := fmt.Fscanf(file, "%d %f %f %f %f %f %f\n",

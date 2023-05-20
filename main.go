@@ -2,6 +2,7 @@ package main
 
 import (
 	"atom/postProcess"
+	"atom/preProcess"
 	. "atom/util"
 	"sync"
 )
@@ -16,6 +17,10 @@ const (
 )
 
 func main() {
+	pre()
+}
+
+func post() {
 	wg := &sync.WaitGroup{}
 	wg.Add(task)
 	// output1
@@ -45,4 +50,13 @@ func main() {
 		postProcess.OpenInput(input, writers)
 	}
 	wg.Wait()
+}
+
+func pre() {
+	path := "/Users/xuyi/Desktop/npg_data/npg_atom.txt"
+	input := PreInput{
+		InputType: preProcess.Tme,
+		Path:      path,
+	}
+	preProcess.AddMol(input)
 }

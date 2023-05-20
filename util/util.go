@@ -1,5 +1,7 @@
 package util
 
+// post process
+
 type Output struct {
 	Average      int
 	OutputSuffix string
@@ -42,4 +44,11 @@ type EnergyData struct {
 	EMol     float64
 	EPair    float64
 	ELong    float64
+}
+
+// pre process
+
+type PreInput struct {
+	Path      string
+	InputType string
 }
