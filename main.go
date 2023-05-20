@@ -16,10 +16,13 @@ const (
 )
 
 func main() {
-	writer := make(chan []Data)
 	wg := &sync.WaitGroup{}
 	wg.Add(task)
+	// output1
 	var outputs []OutputFormatSample
+	writers := make([]chan []Data, 0)
+	writer := make(chan []Data)
+	writers = append(writers, writer)
 	outputs = append(outputs,
 		OutputFormatSample{OutputFormat: postProcess.TVDiagram, Start: -1000, End: 1000})
 	output := Output{
@@ -29,6 +32,7 @@ func main() {
 		OutputFormat: outputs,
 	}
 	postProcess.OpenOutput(output, wg, writer)
+	// HTTP
 	for i := 0; i < task; i++ {
 		input := Input{
 			Start:       s,
@@ -38,7 +42,7 @@ func main() {
 			InputPrefix: path,
 			InputSuffix: postProcess.TXT,
 		}
-		postProcess.OpenInput(input, writer)
+		postProcess.OpenInput(input, writers)
 	}
 	wg.Wait()
 }

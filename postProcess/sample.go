@@ -30,7 +30,7 @@ func init() {
 	formatMap[TVDiagram] = TV
 }
 
-func OpenInput(input Input, writer chan []Data) {
+func OpenInput(input Input, writers []chan []Data) {
 	data := make([]Data, 0)
 	for i := input.Start; i <= input.End; i += 1 {
 		tStr := input.DataType + strconv.FormatInt(int64(i), 10) + "." + input.InputType
@@ -42,7 +42,9 @@ func OpenInput(input Input, writer chan []Data) {
 		f.Seek(0, 0)
 		data = dataProcess(f, input, data)
 	}
-	writer <- data
+	for _, writer := range writers {
+		writer <- data
+	}
 	log.Printf("Totally scan %d lines of data\n", len(data))
 }
 
