@@ -1,4 +1,4 @@
-package phase
+package postProcess
 
 import (
 	"bufio"
@@ -13,9 +13,9 @@ type step struct {
 }
 
 // 输入参数
-const end int64 = 43784000 - 35000000
+const end int64 = 35000000
 const timeStep int64 = 100
-const target int = 500 // x步合并为一步
+const target int = 50 // x步合并为一步
 
 func Solve() {
 	reader := bufio.NewReader(os.Stdin)
@@ -48,7 +48,7 @@ func Solve() {
 		}
 	}
 	// output
-	if f, err := os.OpenFile("./phase/out.txt", os.O_RDWR, 0666); err != nil {
+	if f, err := os.OpenFile("./postProcess/out.txt", os.O_RDWR, 0666); err != nil {
 		panic(err)
 	} else {
 		_, _ = f.Seek(0, 0)
