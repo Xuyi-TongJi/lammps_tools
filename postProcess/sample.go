@@ -2,6 +2,7 @@ package postProcess
 
 import (
 	. "atom/util"
+	"bufio"
 	"errors"
 	"fmt"
 	"github.com/xuri/excelize/v2"
@@ -66,15 +67,13 @@ func OpenOutput(output Output, wg *sync.WaitGroup, writer chan []Data) {
 						switch output.OutputSuffix {
 						case XLSX:
 							{
-								f, err := excelize.OpenFile(outputPath)
+								f := excelize.NewFile()
+								index, err := f.NewSheet(DefaultSheet)
 								if err != nil {
-									os.Create(outputPath)
-									f, err = excelize.OpenFile(outputPath)
-								} else if err != nil {
-									log.Println(outputPath)
 									panic(err)
 								}
 								function(f, data, output.Average, format.Start, format.End, output.OutputSuffix)
+								f.SetActiveSheet(index)
 								if err := f.SaveAs(outputPath); err != nil {
 									panic(err)
 								}
@@ -149,7 +148,7 @@ func TV(file any, data []Data, average int, startSample int, endSample int, outp
 	})
 	curr, n := 0, len(data)
 	sumT, sumV := 0.0, 0.0
-	row := 0
+	row := 1
 	for i := 0; i < n; i++ {
 		d, _ := data[i].(HeatData)
 		if d.Temp >= float64(startSample) && d.Temp <= float64(endSample) {
@@ -177,7 +176,8 @@ func TV(file any, data []Data, average int, startSample int, endSample int, outp
 						if !valid {
 							panic("Invalid output file type...")
 						}
-						fmt.Fprintf(f, "%.3f %.1f\n", avgT, avgV)
+						buffer := bufio.NewWriter(f)
+						fmt.Fprintf(buffer, "%.3f %.1f\n", avgT, avgV)
 					}
 				}
 				curr = 0
