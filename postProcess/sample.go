@@ -129,6 +129,8 @@ func dataProcess(file *os.File, input Input, data []Data) []Data {
 				}
 				data = append(data, step)
 			}
+		default:
+			panic("Invalid input data...")
 		}
 	}
 	return data
@@ -166,8 +168,12 @@ func TV(file any, data []Data, average int, startSample int, endSample int, outp
 						}
 						cellT := "A" + strconv.FormatInt(int64(row), 10)
 						cellV := "B" + strconv.FormatInt(int64(row), 10)
-						f.SetCellValue(DefaultSheet, cellT, strconv.FormatFloat(avgT, 'f', 3, 64))
-						f.SetCellValue(DefaultSheet, cellV, strconv.FormatFloat(avgV, 'f', 1, 64))
+						if err := f.SetCellValue(DefaultSheet, cellT, strconv.FormatFloat(avgT, 'f', 3, 64)); err != nil {
+							log.Fatalln(err)
+						}
+						if err := f.SetCellValue(DefaultSheet, cellV, strconv.FormatFloat(avgV, 'f', 1, 64)); err != nil {
+							log.Fatalln(err)
+						}
 						row += 1
 					}
 				case TXT:
