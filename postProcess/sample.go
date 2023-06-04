@@ -2,7 +2,6 @@ package postProcess
 
 import (
 	. "atom/util"
-	"bufio"
 	"errors"
 	"fmt"
 	"github.com/xuri/excelize/v2"
@@ -14,12 +13,13 @@ import (
 )
 
 const (
-	XLSX         = ".xlsx"
-	TXT          = ".txt"
-	TVDiagram    = "TV"
-	DefaultSheet = "Sheet1"
-	HEAT         = "heat"
-	ENERGY       = "energy"
+	XLSX          = ".xlsx"
+	TXT           = ".txt"
+	TVDiagram     = "TV"
+	DefaultSheet  = "Sheet1"
+	HEAT          = "heat"
+	ENERGY        = "energy"
+	HeatAndEnergy = "heat_and_energy"
 )
 
 var titleLine = make(map[string]int, 0)
@@ -40,7 +40,7 @@ func OpenInput(input Input, writers []chan []Data) {
 		if err != nil {
 			panic(err)
 		}
-		f.Seek(0, 0)
+		_, _ = f.Seek(0, 0)
 		data = dataProcess(f, input, data)
 	}
 	for _, writer := range writers {
@@ -182,8 +182,7 @@ func TV(file any, data []Data, average int, startSample int, endSample int, outp
 						if !valid {
 							panic("Invalid output file type...")
 						}
-						buffer := bufio.NewWriter(f)
-						fmt.Fprintf(buffer, "%.3f %.1f\n", avgT, avgV)
+						fmt.Fprintf(f, "%.3f %.1f\n", avgT, avgV)
 					}
 				}
 				curr = 0
@@ -193,4 +192,8 @@ func TV(file any, data []Data, average int, startSample int, endSample int, outp
 			break
 		}
 	}
+}
+
+func TE(file any, data []Data, average int, startSample int, endSample int, outputFile string) {
+
 }

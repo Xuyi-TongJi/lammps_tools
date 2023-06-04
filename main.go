@@ -4,20 +4,28 @@ import (
 	"atom/postProcess"
 	"atom/preProcess"
 	. "atom/util"
+	"strconv"
 	"sync"
 )
 
+var suf = "/Users/xuyi/Desktop/phase520/"
+var path = "/Users/xuyi/Desktop/phase520/"
+
 const (
-	path = "/Users/xuyi/Desktop/phase518_tme/280/0/"
 	s    = 1
 	e    = 3
-	it   = "heat"
+	it   = postProcess.HEAT
 	task = 1
-	dt   = postProcess.HEAT
+	dt   = postProcess.ENERGY
 )
 
 func main() {
-	pre()
+	for i := 260; i <= 290; i += 30 {
+		for j := 0; j <= 3; j++ {
+			path = suf + strconv.FormatInt(int64(i), 10) + "/" + strconv.FormatInt(int64(j), 10) + "/"
+			post()
+		}
+	}
 }
 
 func post() {
@@ -33,7 +41,7 @@ func post() {
 	output := Output{
 		Average:      100,
 		OutputPrefix: path + "data/",
-		OutputSuffix: postProcess.XLSX,
+		OutputSuffix: postProcess.TXT,
 		OutputFormat: outputs,
 	}
 	postProcess.OpenOutput(output, wg, writer)

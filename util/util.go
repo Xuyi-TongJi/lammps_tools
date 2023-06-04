@@ -46,6 +46,22 @@ type EnergyData struct {
 	ELong    float64
 }
 
+type HEData struct {
+	TimeStep int64
+	RouV     float64
+	TempNow  float64
+	Temp     float64
+	Volume   float64
+	Density  float64
+	Enthalpy float64
+	Ke       float64
+	Pe       float64
+	ETotal   float64
+	EMol     float64
+	EPair    float64
+	ELong    float64
+}
+
 // pre process
 
 type PreInput struct {
